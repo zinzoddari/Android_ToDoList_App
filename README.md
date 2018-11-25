@@ -30,4 +30,5 @@
 ## 기타
 * ListView 버튼 추가 ✓
 * ListView 새 데이터 추가하면 다음 칸 출력 ✓
+* 데이터 FILE I/O 저장 
 <hr/>
