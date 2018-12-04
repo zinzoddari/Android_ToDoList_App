@@ -11,6 +11,9 @@ public class ListViewBtnItem
     private String date;
     private String memo;
     private String flag;
+    private String time;
+
+    public ListViewBtnItem() { }
 
     public void ListViewBtnItem(String position, String subject, String date, String memo, String flag)
     {
@@ -19,6 +22,7 @@ public class ListViewBtnItem
         this.date = date;
         this.memo = memo;
         this.flag = flag;
+        this.time = time;
     }
 
     public void setPosition(String position) {
@@ -40,6 +44,13 @@ public class ListViewBtnItem
     }
     public String getDate() {
         return this.date;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+    public String getTime() {
+        return this.time;
     }
 
     public void setMemo(String memo) {

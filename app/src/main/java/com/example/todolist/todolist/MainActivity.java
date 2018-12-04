@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private String subject;
     private Context context;
     private boolean flag = false;
+    private TextView countText;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -83,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
         editText = (EditText) findViewById(R.id.editText);
         button = (Button) findViewById(R.id.plus_btn);
-        radioButton = (RadioButton) findViewById(R.id.radionButton);
         imageView = (ImageView) findViewById(R.id.infoBtn);
         listview = (ListView) findViewById(R.id.listView);
+        countText = (TextView)findViewById(R.id.countText);
 
         if (items == null) {
             items = new ArrayList<>();
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("Sdffsfsd", "야 ㄴㅇㄹㅇㄴ" + sdformat.format(cal.getTime()));
 
-        myRef.orderByChild("date").addValueEventListener(new ValueEventListener() {
+        myRef.orderByChild("flag").equalTo("N").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 items.clear();
@@ -111,20 +112,31 @@ public class MainActivity extends AppCompatActivity {
 
                     listview.setAdapter(adapter);
                 }
-                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
+                else
+                {
                     item = new ListViewBtnItem();
+                    /*item.setSubject(dataSnapshot.child("todoList").child("subject").getValue(String.class));*/
+                    for (DataSnapshot child: dataSnapshot.getChildren()) {
+                        item = new ListViewBtnItem();
 
-                    item.setPosition(dataSnapshot.child(String.valueOf(i)).child("position").getValue(String.class));
-                    item.setSubject(dataSnapshot.child(String.valueOf(i)).child("subject").getValue(String.class));
-                    item.setMemo(dataSnapshot.child(String.valueOf(i)).child("memo").getValue(String.class));
-                    item.setDate(dataSnapshot.child(String.valueOf(i)).child("date").getValue(String.class));
-                    item.setFlag(dataSnapshot.child(String.valueOf(i)).child("flag").getValue(String.class));
+                        Log.d("SDfasdafDS", "양 : " + child.getKey());
 
-                    items.add(i, item);
+                        item.setSubject(dataSnapshot.child(child.getKey()).child("subject").getValue(String.class));
+                        item.setMemo(dataSnapshot.child(child.getKey()).child("memo").getValue(String.class));
+                        item.setDate(dataSnapshot.child(child.getKey()).child("date").getValue(String.class));
+                        item.setTime(dataSnapshot.child(child.getKey()).child("time").getValue(String.class));
+                        item.setFlag(dataSnapshot.child(child.getKey()).child("flag").getValue(String.class));
+                        item.setPosition(child.getKey());
 
-                    adapter = new ListViewBtnAdapter(context, R.layout.before_layout, items);
+                        Log.d("SDfasdafDS", "양 : " + item.getSubject());
 
-                    listview.setAdapter(adapter);
+                        items.add(item);
+                    }
+                        adapter = new ListViewBtnAdapter(context, R.layout.before_layout, items);
+
+                        listview.setAdapter(adapter);
+
+                        countText.setText(dataSnapshot.getChildrenCount() + " items due today");
                 }
             }
 

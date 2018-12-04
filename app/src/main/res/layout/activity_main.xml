@@ -34,11 +34,12 @@
                     android:text="To Do List" />
 
                 <TextView
+                    android:id="@+id/countText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:text="1 items due today" />
+                    android:text="0 items due today" />
             </LinearLayout>
         </LinearLayout>
         <ListView

@@ -18,10 +18,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -44,7 +49,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListViewBtnAdapter extends ArrayAdapter
 {
@@ -52,17 +59,18 @@ public class ListViewBtnAdapter extends ArrayAdapter
     private ArrayList<ListViewBtnItem> items;
     private boolean buttonFlag = false;
     private Button button;
-    private RadioButton radioButton;
     private EditText editText;
     private ImageView imageView;
+    private CheckBox checkBox;
     private ListView listView;
     private ViewHolder holder;
     private int flagInt = 1;
     private boolean flag = false;
     private TextView posId;
+    private TextView timeDateText, subjectText;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference();
+    DatabaseReference myRef = database.getReference();
 
     // 버튼 클릭 이벤트를 위한 Listener 인터페이스 정의.
     public interface ListBtnClickListener {
@@ -100,10 +108,26 @@ public class ListViewBtnAdapter extends ArrayAdapter
         }
         editText = (EditText) convertView.findViewById(R.id.editText);
         button = (Button)convertView.findViewById(R.id.plus_btn);
-        radioButton = (RadioButton)convertView.findViewById(R.id.radionButton);
         imageView = (ImageView)convertView.findViewById(R.id.infoBtn);
         listView = (ListView)convertView.findViewById(R.id.listView);
         posId = (TextView)convertView.findViewById(R.id.posId);
+        checkBox = (CheckBox)convertView.findViewById(R.id.checkbox);
+        subjectText = (TextView)convertView.findViewById(R.id.subjectText);
+        timeDateText = (TextView)convertView.findViewById(R.id.timeDateText);
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("SDfsdfdsfdsf", "야 눌렀다 : " + position);
+
+                if(checkBox.isChecked() == false)
+                {
+                    Map<String, Object> taskMap = new HashMap<>();
+                    taskMap.put("flag", "Y");
+                    myRef.child(items.get(position).getPosition()).updateChildren(taskMap);
+                }
+            }
+        });
 
         if(flag == false)
         {
@@ -114,18 +138,39 @@ public class ListViewBtnAdapter extends ArrayAdapter
                 editText.setFocusable(false);
                 //editText.setFocusableInTouchMode(false);
                 button.setFocusable(false);
-                radioButton.setFocusable(false);
+                checkBox.setFocusable(false);
                 imageView.setFocusable(false);
 
+                editText.setVisibility(View.INVISIBLE);
                 button.setVisibility(View.INVISIBLE);
-                radioButton.setVisibility(View.VISIBLE);
+                checkBox.setVisibility(View.VISIBLE);
                 imageView.setVisibility(View.VISIBLE);
+                subjectText.setVisibility(View.VISIBLE);
+                timeDateText.setVisibility(View.VISIBLE);
 
-                editText.setText(items.get(position).getSubject());
                 posId.setText(items.get(position).getPosition());
+                subjectText.setText(items.get(position).getSubject());
+
+
+                long now = System.currentTimeMillis();
+
+                Date date = new Date(now);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                String getTime = sdf.format(date);
+
+                if(getTime.equals(items.get(position).getDate()))
+                {
+                    timeDateText.setText(items.get(position).getTime());
+                }
+                else
+                {
+                    timeDateText.setText(items.get(position).getDate());
+                }
 
                 flagInt++;
-                Log.d("ㅇㄻㄴㄹ", "야111111111111111");
+                Log.d("ㅇㄻㄴㄹ", "야111111111111111 : " + items.get(position).getPosition());
             }
             if(flagInt == items.size()+1)
             {
@@ -133,17 +178,19 @@ public class ListViewBtnAdapter extends ArrayAdapter
                 item.setSubject("");
                 items.add(item);
                 notifyDataSetChanged();
+                editText.setVisibility(View.VISIBLE);
 
                 flagInt = 0;
             }
 
 
             int postionTmp = position;
-            if(items.get(position).getSubject().equals("a"))
+            if(items.get(position).getSubject().equals(""))
             {
                 button.setVisibility(View.VISIBLE);
-                radioButton.setVisibility(View.INVISIBLE);
+                checkBox.setVisibility(View.INVISIBLE);
                 imageView.setVisibility(View.INVISIBLE);
+                editText.setVisibility(View.VISIBLE);
 
                 flag = true;
             }
@@ -169,6 +216,7 @@ public class ListViewBtnAdapter extends ArrayAdapter
 
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
+                    editText.setVisibility(View.VISIBLE);
                     editText.setClickable(true);
                     editText.setEnabled(true);
                     editText.setFocusable(true);
@@ -184,16 +232,17 @@ public class ListViewBtnAdapter extends ArrayAdapter
                     InputMethodManager immhide = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
                     immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                    editText.setVisibility(View.INVISIBLE);
                     editText.setClickable(false);
                     editText.setEnabled(false);
                     editText.setFocusable(false);
                     //editText.setFocusableInTouchMode(false);
                     button.setFocusable(false);
-                    radioButton.setFocusable(false);
+                    checkBox.setFocusable(false);
                     imageView.setFocusable(false);
 
                     button.setVisibility(View.INVISIBLE);
-                    radioButton.setVisibility(View.VISIBLE);
+                    checkBox.setVisibility(View.VISIBLE);
                     imageView.setVisibility(View.VISIBLE);
                     ListViewBtnItem item = new ListViewBtnItem();
                     item.setPosition(String.valueOf(position));
@@ -201,26 +250,28 @@ public class ListViewBtnAdapter extends ArrayAdapter
 
                     Date date = new Date();
 
-                    SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
 
                     Calendar cal = Calendar.getInstance();
 
-                    cal.setTime(date);
+                    item.setDate(sdformat.format(cal.getTime()));
+
+                    sdformat = new SimpleDateFormat("HH:mm");
                     cal.add(Calendar.MINUTE, -date.getMinutes());
                     cal.add(Calendar.HOUR, 2);
 
-                    item.setDate(sdformat.format(cal.getTime()));
+                    item.setTime(sdformat.format(cal.getTime()));
+
                     item.setFlag("N");
                     item.setMemo("");
 
                     items.set(items.size()-1, item);
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference(""+(items.size()-1));
+
 
                     Log.d("sdfasdfsdafsa", "야호호 : " + (items.size()-1));
 
-                    myRef.setValue(item);
+                    myRef.push().setValue(item);
 
                     Toast.makeText(context, items.get(items.size()-1).getSubject(), Toast.LENGTH_LONG).show();
 
@@ -233,6 +284,8 @@ public class ListViewBtnAdapter extends ArrayAdapter
                 }
             }
         });
+
+
 
         return convertView;
     }

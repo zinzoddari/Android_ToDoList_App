@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -65,28 +66,11 @@ public class MainDetail extends AppCompatActivity
             {
                 String tmp = dataSnapshot.child(position).child("subject").getValue(String.class);
                 String date = dataSnapshot.child(position).child("date").getValue(String.class);
+                String time = dataSnapshot.child(position).child("time").getValue(String.class);
                 String memoStr = dataSnapshot.child(position).child("memo").getValue(String.class);
 
-                StringTokenizer st = new StringTokenizer(date," ");
-                String tmpDateStr = "";
-                String tmpTimeStr = "";
-                int flagInt = 0 ;
-                while(st.hasMoreTokens())
-                {
-                    if(flagInt == 0)
-                    {
-                        tmpDateStr += st.nextToken();
-                    }
-                    else
-                    {
-                        tmpTimeStr += st.nextToken();
-                    }
-
-                    flagInt++;
-                }
-
-                dateText.setText(tmpDateStr);
-                timeText.setText(tmpTimeStr);
+                dateText.setText(date);
+                timeText.setText(time);
                 subjectEdit.setText(tmp);
                 memo.setText(memoStr);
             }
@@ -103,7 +87,8 @@ public class MainDetail extends AppCompatActivity
     {
         Map<String, Object> taskMap = new HashMap<>();
         taskMap.put("subject", subjectEdit.getText().toString());
-        taskMap.put("date", dateText.getText().toString() + " " + timeText.getText().toString());
+        taskMap.put("date", dateText.getText().toString());
+        taskMap.put("time", timeText.getText().toString());
         taskMap.put("memo", memo.getText().toString());
         myRef.child(position).updateChildren(taskMap);
 
@@ -118,7 +103,7 @@ public class MainDetail extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int date) {
 
-                String msg;
+                String msg="";
                 if(month < 10){
                     //month = Integer.valueOf("0" + (month+1));
                     msg = String.format("%d-0%d-%d", year, month+1, date);
@@ -135,11 +120,6 @@ public class MainDetail extends AppCompatActivity
                 {
                     msg = String.format("%d-%d-%d", year, month+1, date);
                 }
-
-                Toast.makeText(MainDetail.this, msg, Toast.LENGTH_SHORT).show();
-
-
-
                 dateText.setText(msg);
             }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));

@@ -7,15 +7,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RadioButton
-            android:id="@+id/radionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="7dp"
-            android:onClick="onRadioClick"
-            android:visibility="invisible"/>
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="8dp"
+                android:visibility="invisible"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,19 +32,41 @@
                 android:text="+"
                 android:layout_gravity="start"
                 android:onClick="onClick"/>
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:enabled="false"
-                android:focusable ="false"
-                android:background="@android:color/transparent"/>
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="230dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/subjectText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="invisible"/>
+                <TextView
+                    android:id="@+id/timeDateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="7dp"
+                    android:textColor="@color/colorRed"
+                    android:visibility="invisible"/>
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start|center"
+                    android:enabled="false"
+                    android:focusable ="false"
+                    android:background="@android:color/transparent"/>
+            </FrameLayout>
+
+
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/infoBtn"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:visibility="invisible"
                 android:src="@drawable/info"/>
         </LinearLayout>
     </FrameLayout>
