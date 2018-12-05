@@ -25,45 +25,61 @@ public class ListViewBtnItem
         this.time = time;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(String position)
+    {
         this.position = position;
     }
-    public String getPosition() {
+
+    public String getPosition()
+    {
         return this.position;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(String subject)
+    {
         this.subject = subject;
     }
-    public String getSubject() {
+
+    public String getSubject()
+    {
         return this.subject;
     }
 
-    public void setDate(String date) {
+    public void setDate(String date)
+    {
         this.date = date;
     }
-    public String getDate() {
+
+    public String getDate()
+    {
         return this.date;
     }
 
-    public void setTime(String time) {
+    public void setTime(String time)
+    {
         this.time = time;
     }
-    public String getTime() {
+
+    public String getTime()
+    {
         return this.time;
     }
 
-    public void setMemo(String memo) {
+    public void setMemo(String memo)
+    {
         this.memo = memo;
     }
-    public String getMemo() {
+    public String getMemo()
+    {
         return this.memo;
     }
 
-    public void setFlag(String flag) {
+    public void setFlag(String flag)
+    {
         this.flag = flag;
     }
-    public String getFlag() {
+    public String getFlag()
+    {
         return this.flag;
     }
 }
