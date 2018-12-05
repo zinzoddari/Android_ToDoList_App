@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 else
                 {
                     item = new ListViewBtnItem();
-                    /*item.setSubject(dataSnapshot.child("todoList").child("subject").getValue(String.class));*/
                     for (DataSnapshot child: dataSnapshot.getChildren()) {
                         item = new ListViewBtnItem();
 
@@ -154,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 String editTextTmp = tmp.getText().toString();
 
                 intent.putExtra("position", editTextTmp);
+                intent.putExtra("checkFlag", "Main");
                 startActivity(intent);
             }
         });

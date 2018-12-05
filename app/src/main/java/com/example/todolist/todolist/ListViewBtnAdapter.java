@@ -118,8 +118,6 @@ public class ListViewBtnAdapter extends ArrayAdapter
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("SDfsdfdsfdsf", "야 눌렀다 : " + position);
-
                 if(checkBox.isChecked() == false)
                 {
                     Map<String, Object> taskMap = new HashMap<>();
@@ -170,7 +168,6 @@ public class ListViewBtnAdapter extends ArrayAdapter
                 }
 
                 flagInt++;
-                Log.d("ㅇㄻㄴㄹ", "야111111111111111 : " + items.get(position).getPosition());
             }
             if(flagInt == items.size()+1)
             {
@@ -266,10 +263,6 @@ public class ListViewBtnAdapter extends ArrayAdapter
                     item.setMemo("");
 
                     items.set(items.size()-1, item);
-
-
-
-                    Log.d("sdfasdfsdafsa", "야호호 : " + (items.size()-1));
 
                     myRef.push().setValue(item);
 

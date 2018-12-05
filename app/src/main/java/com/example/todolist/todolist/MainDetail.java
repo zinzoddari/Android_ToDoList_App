@@ -40,6 +40,8 @@ public class MainDetail extends AppCompatActivity
     private TextView dateText, timeText, memo;
     private Calendar cal;
     private String position;
+    private String checkFlag;
+    private Intent intent;
 
     private String year, month, day, hour, min;
 
@@ -52,6 +54,7 @@ public class MainDetail extends AppCompatActivity
         Intent intent = getIntent();
 
         position = intent.getExtras().getString("position");
+        checkFlag = intent.getExtras().getString("checkFlag");
         cal = Calendar.getInstance();
 
         subjectEdit = (EditText)findViewById(R.id.subjectEdit);
@@ -91,8 +94,17 @@ public class MainDetail extends AppCompatActivity
         taskMap.put("time", timeText.getText().toString());
         taskMap.put("memo", memo.getText().toString());
         myRef.child(position).updateChildren(taskMap);
-
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        switch (checkFlag)
+        {
+            case "Main":
+                intent = new Intent(getApplicationContext(),MainActivity.class);
+                break;
+            case "History":
+                intent = new Intent(getApplicationContext(),MainHistory.class);
+                break;
+            default:
+                    break;
+        }
         startActivity(intent);
         finish();
     }
