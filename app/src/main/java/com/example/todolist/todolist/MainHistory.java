@@ -25,6 +25,7 @@ public class MainHistory extends AppCompatActivity
 {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+
     private ListViewBtnItem item;
     private ArrayList<ListViewBtnItem> items;
     private Context context;
@@ -32,9 +33,8 @@ public class MainHistory extends AppCompatActivity
     private ListView listView;
     private TextView countHistoryText, posId;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener()
+    {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item)
         {
@@ -42,8 +42,11 @@ public class MainHistory extends AppCompatActivity
             {
                 case R.id.navigation_hide:
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+
                     startActivity(intent);
+
                     finish();
+
                     return true;
             }
             return false;
@@ -51,7 +54,8 @@ public class MainHistory extends AppCompatActivity
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_main);
 
@@ -65,14 +69,17 @@ public class MainHistory extends AppCompatActivity
         countHistoryText = (TextView)findViewById(R.id.countHistoryText);
         posId = (TextView)findViewById(R.id.posHistoryId);
 
-        myRef.orderByChild("flag").equalTo("Y").addValueEventListener(new ValueEventListener() {
+        myRef.orderByChild("flag").equalTo("Y").addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
                 items.clear();
-                Log.d("SDfasdafDS : ", "요 : " + dataSnapshot.getChildrenCount());
+
                 item = new ListViewBtnItem();
 
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                for (DataSnapshot child: dataSnapshot.getChildren())
+                {
                     item = new ListViewBtnItem();
 
                     item.setSubject(dataSnapshot.child(child.getKey()).child("subject").getValue(String.class));
@@ -82,8 +89,6 @@ public class MainHistory extends AppCompatActivity
                     item.setFlag(dataSnapshot.child(child.getKey()).child("flag").getValue(String.class));
                     item.setPosition(child.getKey());
 
-                    Log.d("SDfasdafDS", "유유유 : " + item.getSubject());
-
                     items.add(item);
                 }
                 adapter = new ListViewHistoryAdapter(context, R.layout.before_layout, items);
@@ -92,15 +97,17 @@ public class MainHistory extends AppCompatActivity
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
 
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.d("asfdsdafsd", " 눌렸어영;");
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
+            {
                 Intent intent = new Intent(getApplicationContext(), MainDetail.class);
 
                 intent.putExtra("position", items.get(position).getPosition());

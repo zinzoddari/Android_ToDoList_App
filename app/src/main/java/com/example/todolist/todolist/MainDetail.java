@@ -89,11 +89,14 @@ public class MainDetail extends AppCompatActivity
     public void onClick(View v)
     {
         Map<String, Object> taskMap = new HashMap<>();
+
         taskMap.put("subject", subjectEdit.getText().toString());
         taskMap.put("date", dateText.getText().toString());
         taskMap.put("time", timeText.getText().toString());
         taskMap.put("memo", memo.getText().toString());
+
         myRef.child(position).updateChildren(taskMap);
+
         switch (checkFlag)
         {
             case "Main":
@@ -105,27 +108,30 @@ public class MainDetail extends AppCompatActivity
             default:
                     break;
         }
+
         startActivity(intent);
+
         finish();
     }
 
     public void mOnDateClick(View v)
     {
-        DatePickerDialog dialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog dialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog, new DatePickerDialog.OnDateSetListener()
+        {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int date) {
 
                 String msg="";
-                if(month < 10){
-                    //month = Integer.valueOf("0" + (month+1));
+                if(month < 10)
+                {
                     msg = String.format("%d-0%d-%d", year, month+1, date);
                 }
-                else if(date < 10){
-                    //date = "0" + date;
+                else if(date < 10)
+                {
                     msg = String.format("%d-%d-0%d", year, month+1, date);
                 }
-                else if(date < 10 && month < 10){
-                    //date = "0" + date;
+                else if(date < 10 && month < 10)
+                {
                     msg = String.format("%d-0%d-0%d", year, month+1, date);
                 }
                 else
@@ -136,14 +142,15 @@ public class MainDetail extends AppCompatActivity
             }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
 
-        //dialog.getDatePicker().setMaxDate(new Date().getTime());    //입력한 날짜 이후로 클릭 안되게 옵션
         dialog.show();
     }
 
-    public void mOnTimeClick(View v) {
+    public void mOnTimeClick(View v)
+    {
         TimePickerDialog dialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+            public void onTimeSet(TimePicker timePicker, int hour, int min)
+            {
 
                 int time=(min * 60 + hour * 60 * 60) * 1000;
                 SimpleDateFormat format = new SimpleDateFormat("HH:mm");
@@ -151,7 +158,7 @@ public class MainDetail extends AppCompatActivity
 
                 timeText.setText(formatted);
             }
-        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);  //마지막 boolean 값은 시간을 24시간으로 보일지 아닐지
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);
 
         dialog.show();
     }
