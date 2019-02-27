@@ -38,6 +38,7 @@
 * History 페이지에서 날짜별로 구분하기
 
 ## 기타
+
 * ListView 버튼 추가 ✓
 * ListView 새 데이터 추가하면 다음 칸 출력 ✓
 * ~~데이터 FILE I/O 저장~~
